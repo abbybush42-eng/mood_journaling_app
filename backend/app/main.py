@@ -7,9 +7,19 @@ from sqlmodel import Session, select
 
 from .db import create_db_and_tables, get_session
 from .models import Entry, EntryCreate
+print("Models imported successfully")
+
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # development only
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def root():
