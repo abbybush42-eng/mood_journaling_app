@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import Depends, FastAPI, status
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from sqlmodel import Session, select
@@ -52,6 +52,22 @@ def create_entry(entry: EntryCreate, session: Session = Depends(get_session)):
 def list_entries(session: Session = Depends(get_session)):
     entries = session.exec(select(Entry)).all()
     return entries
+
+
+@app.put("/entry/{entry_id}")
+def update_entry(entry_id: int, entry: EntryCreate, session: Session = Depends(get_session)):
+    existing_entry = session.get(Entry, entry_id)
+    if not existing_entry:
+        raise HTTPException(status_code=404, detail="Entry not found")
+
+    existing_entry.date = entry.date
+    existing_entry.mood = entry.mood
+    existing_entry.note = entry.note
+
+    session.add(existing_entry)
+    session.commit()
+    session.refresh(existing_entry)
+    return existing_entry
 
 
 @app.exception_handler(RequestValidationError)
