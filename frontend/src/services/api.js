@@ -6,6 +6,9 @@ export function getEntries() {
   return axios.get(`${API_URL}/entries`);
 }
 
+export function createEntry(payload) {
+  return axios.post(`${API_URL}/entry`, payload);
+}
 
 // const API = axios.create({
 //   baseURL: "http://127.0.0.1:8000"
