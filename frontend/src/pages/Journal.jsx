@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { getEntries, createEntry } from "../services/api";
 import EntryForm from "../components/EntryForm";
+import EntryList from "../components/EntryList";
 
 function Journal() {
   const [entries, setEntries] = useState([]);
@@ -32,11 +33,10 @@ function Journal() {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Journal</h1>
       <EntryForm onSubmit={handleEntrySubmit} />
-      ...
-      <pre>{JSON.stringify(entries, null, 2)}</pre>
+      <EntryList entries={entries} onUpdate={loadEntries} />
     </div>
   );
 }

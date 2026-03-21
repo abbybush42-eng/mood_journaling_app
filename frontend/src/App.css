@@ -1,38 +1,296 @@
-.App {
-  text-align: center;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #d1eaff; /* light blue */
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+h1,
+h2 {
+  color: #2c3e50;
+}
+
+button {
+  background-color: #157974; /* teal */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #229954;
+}
+
+form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.sort-button {
+  background-color: #157974; /* teal to match submit */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  height: 36px;
+  min-height: 36px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.cancel-button {
+  background-color: #555;
   color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  height: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.entry-card {
+  margin-bottom: 1rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.App-link {
-  color: #61dafb;
+.entry-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.edit-button {
+  background-color: #157974;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.entry-meta {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.entry-edit-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+
+.entry-edit-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.entry-edit-item:first-child {
+  flex: 1.2;
+}
+
+.entry-edit-item label {
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.entry-edit-item input,
+.entry-edit-item select {
+  width: 100%;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .entry-edit-row {
+    flex-direction: column;
+    align-items: stretch;
   }
-  to {
-    transform: rotate(360deg);
+
+  .entry-edit-item {
+    flex: unset;
+  }
+
+  .entry-edit-item:first-child {
+    flex: unset;
+  }
+
+  .edit-actions {
+    flex-direction: column;
+  }
+
+  .edit-actions button {
+    width: 100%;
+  }
+}
+
+.cancel-button {
+  background-color: #555;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .entry-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .edit-actions {
+    flex-direction: column;
+  }
+
+  .edit-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 14px;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .sort-button,
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+  }
+
+  .entry-card {
+    padding: 10px;
+  }
+
+  .entry-meta {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .entry-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  form {
+    padding: 14px;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.1rem;
+  }
+
+  .entry-card {
+    padding: 10px;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 14px;
+  }
+
+  .entry-meta {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+  }
+
+  form {
+    padding: 14px;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.1rem;
+  }
+
+  .entry-card {
+    padding: 10px;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 14px;
+  }
+
+  .entry-meta {
+    font-size: 0.95rem;
   }
 }

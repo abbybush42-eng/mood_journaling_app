@@ -10,6 +10,10 @@ export function createEntry(payload) {
   return axios.post(`${API_URL}/entry`, payload);
 }
 
+export function updateEntry(id, payload) {
+  return axios.put(`${API_URL}/entry/${id}`, payload);
+}
+
 // const API = axios.create({
 //   baseURL: "http://127.0.0.1:8000"
 // });
