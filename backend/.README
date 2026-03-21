@@ -1,0 +1,155 @@
+# Mood Journaling API (Backend)
+📘 A lightweight, expressive journaling API built with FastAPI, SQLModel, and SQLite. This backend powers a mood‑tracking application where users can record daily entries, retrieve past reflections, and build a long‑term emotional history.
+This project is part of a full‑stack portfolio build, designed to demonstrate backend fundamentals, clean architecture, and professional development practices.
+
+🌿 Overview
+What the API Does
+- Accepts new mood journal entries with a date, mood rating, and optional note
+- Stores entries in a SQLite database using SQLModel
+- Retrieves individual entries or all entries
+- Provides a health check endpoint for uptime monitoring
+- Includes validation and error handling for clean, predictable responses
+Tech Stack
+- FastAPI — high‑performance Python web framework
+- SQLModel — ORM built on SQLAlchemy + Pydantic
+- SQLite — simple, file‑based relational database
+- Uvicorn — ASGI server for running FastAPI
+Purpose
+This backend is the foundation of a full‑stack journaling application. It demonstrates:
+- API design
+- Data modeling
+- Validation
+- Error handling
+- Environment setup
+- Professional project structure
+It is built as a portfolio project to showcase backend engineering skills.
+
+⚙️ Setup Instructions
+These steps assume you are inside the project’s backend/ directory.
+1. Create and activate a virtual environment
+Windows (PowerShell)
+python -m venv venv
+venv\Scripts\activate
+
+
+You should see:
+(venv)
+
+
+If not, ensure VS Code is opened to the backend folder, not the project root.
+2. Install dependencies
+pip install fastapi sqlmodel uvicorn
+
+
+(You may also install black and isort for formatting.)
+3. Run the server
+uvicorn app.main:app --reload
+
+
+You should see:
+Uvicorn running on http://127.0.0.1:8000
+
+
+4. Access the interactive API docs
+Open:
+http://127.0.0.1:8000/docs
+
+
+FastAPI automatically generates a full Swagger UI for testing endpoints.
+
+🔌 Endpoints
+POST /entry
+Create a new journal entry.
+Request Body
+{
+  "date": "2024-01-01",
+  "mood": 4,
+  "note": "Feeling good today"
+}
+
+
+Response
+Returns the created entry with an auto‑generated id.
+
+GET /entry/{id}
+Retrieve a single entry by its ID.
+
+GET /entries
+Retrieve all entries in the database.
+
+GET /health
+Simple health check endpoint.
+Response
+{
+  "status": "ok"
+}
+
+
+
+🛠️ Troubleshooting & Common Pitfalls
+These are real issues encountered during development — and how to fix them quickly.
+
+1. “SQLite Date type only accepts Python date objects” (500 error)
+Cause:
+Your POST endpoint is receiving a string instead of a Python date object.
+Fix:
+Use a separate request model:
+
+class EntryCreate(SQLModel):
+    date: date
+    mood: int
+    note: Optional[str] = None
+
+
+Then convert it:
+db_entry = Entry(**entry.dict())
+
+
+
+2. FastAPI or SQLModel imports show yellow squiggles in VS Code
+Cause:
+VS Code is using the wrong Python interpreter.
+Fix:
+Open VS Code to the backend folder, then:
+Ctrl + Shift + P → Python: Select Interpreter
+
+
+Choose:
+backend/venv/Scripts/python.exe
+
+
+If needed, create:
+backend/.vscode/settings.json
+
+
+With:
+{
+  "python.defaultInterpreterPath": "C:\\path\\to\\backend\\venv\\Scripts\\python.exe",
+  "python.terminal.activateEnvironment": true
+}
+
+
+
+3. Terminal doesn’t auto‑activate the venv
+Cause:
+VS Code workspace root is wrong.
+Fix:
+Open VS Code to:
+mood_journaling_app/backend
+
+
+Then open a new terminal.
+
+4. “fatal: not a git repository”
+Cause:
+Git was not initialized at the project root.
+Fix:
+cd mood_journaling_app
+git init
+
+
+
+5. “Please tell me who you are” (Git identity error)
+Fix:
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"

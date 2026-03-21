@@ -1,26 +1,25 @@
-from fastapi import FastAPI
-from .models import Entry
-from .models import EntryCreate
-from fastapi import Depends
-from sqlmodel import Session
-from .db import create_db_and_tables, get_session
 from typing import List
-from sqlmodel import select
+
+from fastapi import Depends, FastAPI, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from fastapi import status
+from sqlmodel import Session, select
 
-
+from .db import create_db_and_tables, get_session
+from .models import Entry, EntryCreate
 
 app = FastAPI()
+
 
 @app.get("/")
 def root():
     return {"message": "Hey girl. Mood Journal API is running"}
 
+
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
+
 
 # @app.post("/entry")
 # def create_entry(entry: Entry, session: Session = Depends(get_session)):
@@ -28,6 +27,7 @@ def on_startup():
 #     session.commit()
 #     session.refresh(entry)
 #     return entry
+
 
 @app.post("/entry")
 def create_entry(entry: EntryCreate, session: Session = Depends(get_session)):
@@ -37,10 +37,12 @@ def create_entry(entry: EntryCreate, session: Session = Depends(get_session)):
     session.refresh(db_entry)
     return db_entry
 
+
 @app.get("/entries", response_model=List[Entry])
 def list_entries(session: Session = Depends(get_session)):
     entries = session.exec(select(Entry)).all()
     return entries
+
 
 @app.exception_handler(RequestValidationError)
 def validation_exception_handler(request, exc):
@@ -48,3 +50,8 @@ def validation_exception_handler(request, exc):
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content={"detail": exc.errors()},
     )
+
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
