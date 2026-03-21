@@ -9,9 +9,11 @@ function Journal() {
   const [entries, setEntries] = useState([]);
 
   const loadEntries = () => {
-    getEntries().then(res => setEntries(res.data)).catch(err => {
-      console.error("Failed to load entries", err);
-    });
+    getEntries()
+      .then((res) => setEntries(res.data))
+      .catch((err) => {
+        console.error("Failed to load entries", err);
+      });
   };
 
   useEffect(() => {
