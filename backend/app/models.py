@@ -9,6 +9,7 @@ class Entry(SQLModel, table=True):
     date: date
     mood: int
     note: Optional[str] = None
+    user_id: int = Field(foreign_key="user.id")
 
 
 class EntryCreate(SQLModel):
