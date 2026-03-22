@@ -1,12 +1,13 @@
 import { useState } from "react";
 import MoodSelector from "./MoodSelector";
-import { updateEntry } from "../services/api";
+import { updateEntry, deleteEntry } from "../services/api";
 
 export default function EntryList({ entries, onUpdate }) {
   const [sortField, setSortField] = useState("date");
   const [sortOrder, setSortOrder] = useState("desc");
   const [editingEntryId, setEditingEntryId] = useState(null);
   const [editData, setEditData] = useState({ date: "", mood: "", note: "" });
+  const [deletingEntryId, setDeletingEntryId] = useState(null);
 
   if (!entries || entries.length === 0) {
     return <div>No entries yet. Add your first journal entry above!</div>;
@@ -49,6 +50,26 @@ export default function EntryList({ entries, onUpdate }) {
   const cancelEdit = () => {
     setEditingEntryId(null);
     setEditData({ date: "", mood: "", note: "" });
+  };
+
+  const initiateDelete = (entryId) => {
+    setDeletingEntryId(entryId);
+  };
+
+  const confirmDelete = async () => {
+    if (deletingEntryId === null) return;
+    try {
+      await deleteEntry(deletingEntryId);
+      setDeletingEntryId(null);
+      if (onUpdate) onUpdate();
+    } catch (error) {
+      console.error("Failed to delete entry", error);
+      setDeletingEntryId(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeletingEntryId(null);
   };
 
   const moodLabel = (moodValue) => {
@@ -112,13 +133,22 @@ export default function EntryList({ entries, onUpdate }) {
           <div key={entry.id} className="entry-card">
             <div className="entry-top">
               {editingEntryId !== entry.id && (
-                <button
-                  type="button"
-                  className="edit-button"
-                  onClick={() => startEdit(entry)}
-                >
-                  ✏️
-                </button>
+                <div className="entry-top-buttons">
+                  <button
+                    type="button"
+                    className="edit-button"
+                    onClick={() => startEdit(entry)}
+                  >
+                    ✏️
+                  </button>
+                  <button
+                    type="button"
+                    className="delete-button"
+                    onClick={() => initiateDelete(entry.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               )}
             </div>
 
@@ -191,6 +221,33 @@ export default function EntryList({ entries, onUpdate }) {
           </div>
         ))}
       </div>
+
+      {deletingEntryId !== null && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>
+              Are you sure you would like to delete this entry? You cannot
+              recover it.
+            </p>
+            <div className="modal-actions">
+              <button
+                type="button"
+                className="sort-button"
+                onClick={confirmDelete}
+              >
+                Delete
+              </button>
+              <button
+                type="button"
+                className="cancel-button"
+                onClick={cancelDelete}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

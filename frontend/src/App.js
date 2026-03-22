@@ -13,8 +13,15 @@
 // export default App;
 
 import "./App.css";
-
+import { AuthProvider } from "./context/AuthContext";
 import AppRouter from "./router";
+import SessionTimer from "./components/SessionTimer";
+
 export default function App() {
-  return <AppRouter />;
+  return (
+    <AuthProvider>
+      <SessionTimer />
+      <AppRouter />
+    </AuthProvider>
+  );
 }
