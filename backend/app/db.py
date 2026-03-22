@@ -1,4 +1,5 @@
 from sqlmodel import Session, SQLModel, create_engine
+from .models_user import User
 
 DATABASE_URL = "sqlite:///./journal.db"
 engine = create_engine(DATABASE_URL, echo=True)
